@@ -1,12 +1,19 @@
-use crate::models::{response::UserResponse, user::User};
+use crate::models::{
+    response::{ApiResponse, UserResponse},
+    user::User,
+};
+use crate::utils::logger::log_info_app;
+use axum::http::StatusCode;
 use axum::{extract::Path, Json};
 
 pub async fn get_admin_users() -> Json<Vec<UserResponse>> {
+    log_info_app("Admin users fetched 🗂️".to_string());
     Json(vec![
         UserResponse {
             base: ApiResponse {
                 timestamp: chrono::Utc::now().to_rfc3339(),
-                message: "Admin user fetched".to_string(),
+                message: "Admin user fetched 👤".to_string(),
+                return_code: StatusCode::OK.to_string(),
             },
             user: User {
                 id: 1,
@@ -17,7 +24,8 @@ pub async fn get_admin_users() -> Json<Vec<UserResponse>> {
         UserResponse {
             base: ApiResponse {
                 timestamp: chrono::Utc::now().to_rfc3339(),
-                message: "Admin user fetched".to_string(),
+                message: "Admin user fetched 👤".to_string(),
+                return_code: StatusCode::OK.to_string(),
             },
             user: User {
                 id: 2,
@@ -29,10 +37,12 @@ pub async fn get_admin_users() -> Json<Vec<UserResponse>> {
 }
 
 pub async fn get_admin_user_by_id(Path(id): Path<u64>) -> Json<UserResponse> {
+    log_info_app(format!("Admin user {} fetched 👤", id));
     Json(UserResponse {
         base: ApiResponse {
             timestamp: chrono::Utc::now().to_rfc3339(),
-            message: format!("Admin user {} fetched", id),
+            message: format!("Admin user {} fetched 👤", id),
+            return_code: StatusCode::OK.to_string(),
         },
         user: User {
             id,
