@@ -1,21 +1,26 @@
-use axum::{Router, Server};
-use std::net::SocketAddr;
-use my_api::create_router; // Assuming the new file is named my_api.rs
-
+use crate::router::create_app;
 use dotenvy::dotenv;
 mod router;
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     match dotenv() {
         Ok(_) => println!("Loaded .env file"),
         Err(e) => println!("Failed to load .env file: {}", e),
     }
-    let server = format!("{}:{}", dotenvy::var("HOST").unwrap(), dotenvy::var("PORT").unwrap());
+
+    let server = format!(
+        "{}:{}",
+        dotenvy::var("HOST").unwrap_or_else(|_| "127.0.0.1".to_string()),
+        dotenvy::var("PORT").unwrap_or_else(|_| "3000".to_string())
+    );
     println!("Listening on {}", server);
-    let app = create_app(server).await;
-    match app {
-        Ok(_) => println!("Server started successfully"),
-        Err(e) => println!("Failed to start server: {}", e),
+
+    if let Err(e) = create_app(server).await {
+        println!("Failed to start server: {}", e);
+        return Err(e);
     }
+
+    println!("Server started successfully");
     Ok(())
 }
