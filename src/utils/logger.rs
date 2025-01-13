@@ -1,6 +1,7 @@
 use serde::Serialize;
-use tracing::{debug, error, info, trace, warn};
+use tracing::{error, info};
 use tracing_subscriber;
+
 #[derive(Debug, Serialize)]
 struct AppLogFormat {
     timestamp: String,
@@ -35,22 +36,7 @@ pub fn log_info_app(message: String) {
     info!(message = serde_json::to_string(&log_format).unwrap());
 }
 
-// pub fn log_error_app(message: String) {
-//     let log_format = AppLogFormat::new(chrono::Utc::now().to_rfc3339(), message);
-//     error!(message = serde_json::to_string(&log_format).unwrap());
-// }
-
-// pub fn log_warn_app(message: String) {
-//     let log_format = AppLogFormat::new(chrono::Utc::now().to_rfc3339(), message);
-//     warn!(message = serde_json::to_string(&log_format).unwrap());
-// }
-
-// pub fn log_debug_app(message: String) {
-//     let log_format = AppLogFormat::new(chrono::Utc::now().to_rfc3339(), message);
-//     debug!(message = serde_json::to_string(&log_format).unwrap());
-// }
-
-// pub fn log_trace_app(message: String) {
-//     let log_format = AppLogFormat::new(chrono::Utc::now().to_rfc3339(), message);
-//     trace!(message = serde_json::to_string(&log_format).unwrap());
-// }
+pub fn log_error_app(message: String) {
+    let log_format = AppLogFormat::new(chrono::Utc::now().to_rfc3339(), message);
+    error!(message = serde_json::to_string(&log_format).unwrap());
+}

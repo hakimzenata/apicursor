@@ -1,9 +1,8 @@
-use crate::modules::api::router::get_api_router;
-use crate::utils::logger::log_info_app;
-use axum::http::StatusCode;
-use axum::Router;
-use workspace::api_prelude::ApiResponse;
-
+use axum::{http::StatusCode, Router};
+use workspace::{
+    models::response::ApiResponse, modules::api::router::get_api_router,
+    utils::logger::log_info_app,
+};
 pub async fn create_app() -> Result<Router, Box<dyn std::error::Error>> {
     log_info_app("Creating app 🏗️".to_string());
 
